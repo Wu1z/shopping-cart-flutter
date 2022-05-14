@@ -1,6 +1,6 @@
 # shopping_cart
 
-A new Flutter project.
+A shopping cart made in Flutter using MobX.
 
 ## Getting Started
 
