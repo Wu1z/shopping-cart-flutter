@@ -3,16 +3,19 @@ import 'package:flutter/material.dart';
 class ProductCard extends StatelessWidget {
 
   final bool readOnly;
+  final VoidCallback? onPressed;
 
   const ProductCard({
     Key? key,
     this.readOnly = false,
+    this.onPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 16,
+      elevation: 0,
+      color: Theme.of(context).colorScheme.background,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -25,7 +28,7 @@ class ProductCard extends StatelessWidget {
               height: 100,
               width: 100,
               decoration: BoxDecoration(
-                color: Colors.lightBlue[200],
+                color: Theme.of(context).colorScheme.secondary,
                 borderRadius: BorderRadius.circular(10)
               ),
             ),
@@ -36,7 +39,7 @@ class ProductCard extends StatelessWidget {
                   "Nome produto",
                   style: TextStyle(
                     fontSize: 16,
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.bold
                   ),
                 ),
@@ -44,36 +47,18 @@ class ProductCard extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.all(5),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Visibility(
-                      visible: !readOnly,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.remove, 
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        onPressed: () => debugPrint, 
-                      ),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Visibility(
+                  visible: !readOnly,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.add, 
+                      color: Theme.of(context).colorScheme.primary,
                     ),
+                    onPressed: onPressed, 
                   ),
-                  const Text("1"),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Visibility(
-                      visible: !readOnly,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.add,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        onPressed: () => debugPrint, 
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ],
