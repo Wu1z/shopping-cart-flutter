@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:shopping_cart/main.dart';
+import 'package:shopping_cart/view/product_list_page.dart';
 import 'package:shopping_cart/widget/product_card.dart';
 
 class CartPage extends StatefulWidget {
@@ -38,9 +38,10 @@ class _CartPageState extends State<CartPage> {
                   physics: const BouncingScrollPhysics(),
                   itemCount: cartStore.productList.length,
                   itemBuilder: (context, index) {
-                    return const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: ProductCard(
+                        product: cartStore.productList[index],
                         readOnly: true,
                       ),
                     );

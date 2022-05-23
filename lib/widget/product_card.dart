@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_cart/models/product_model.dart';
 
 class ProductCard extends StatelessWidget {
 
   final bool readOnly;
   final VoidCallback? onPressed;
+  final ProductModel product;
 
   const ProductCard({
     Key? key,
     this.readOnly = false,
-    this.onPressed,
+    this.onPressed, 
+    required this.product,
   }) : super(key: key);
 
   @override
@@ -27,8 +30,9 @@ class ProductCard extends StatelessWidget {
             Container(
               height: 100,
               width: 100,
+              child: Image.network(product.image ?? ""),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(10)
               ),
             ),
@@ -36,7 +40,7 @@ class ProductCard extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(10),
                 child: Text(
-                  "Nome produto",
+                  product.title ?? "",
                   style: TextStyle(
                     fontSize: 16,
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -52,8 +56,7 @@ class ProductCard extends StatelessWidget {
                 child: Visibility(
                   visible: !readOnly,
                   child: IconButton(
-                    icon: Icon(
-                      Icons.add, 
+                    icon: Icon(Icons.add,
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     onPressed: onPressed, 

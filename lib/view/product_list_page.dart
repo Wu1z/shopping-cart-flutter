@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:shopping_cart/main.dart';
-import 'package:shopping_cart/model/product_model.dart';
+import 'package:http/http.dart';
+import 'package:shopping_cart/models/product_model.dart';
+import 'package:shopping_cart/repositories/store_repository.dart';
+import 'package:shopping_cart/stores/cart_store.dart';
 import 'package:shopping_cart/view/cart_page.dart';
 import 'package:shopping_cart/widget/product_card.dart';
+
+final cartStore = CartStore();
 
 class ProductListPage extends StatefulWidget {
   const ProductListPage({Key? key}) : super(key: key);
@@ -13,9 +17,36 @@ class ProductListPage extends StatefulWidget {
 }
 
 class _ProductListPageState extends State<ProductListPage> {
+
+
+  late Future<List<ProductModel>> _request;
+  final _repository = StoreRepository(Client());
+
+  @override
+  void initState() {
+    _request = _fetchProducts();
+    super.initState();
+  }
+
+  Future<List<ProductModel>> _fetchProducts() async {
+    return await _repository.getAll();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          "Products", 
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+      ),
       floatingActionButton: FloatingActionButton.extended(
         label: Row(
           children: [
@@ -36,35 +67,38 @@ class _ProductListPageState extends State<ProductListPage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         onPressed: () => _goToCartPage(),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 20, top: 50, bottom: 20),
-            child: Text(
-              "Products", 
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
+      body: FutureBuilder<List<ProductModel>>(
+        future: _request,
+        builder: (context, snapshot) {
+          if(snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+            final products = snapshot.data!;
+            return ListView.builder(
               physics: const BouncingScrollPhysics(),
-              itemCount: 10,
+              itemCount: products.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ProductCard(
-                    onPressed: _addProduct
+                    product: products[index],
+                    onPressed: () => cartStore.addProductToCart(products[index]),
                   ),
                 );
               },
-            ),
-          ),
-        ],
+            );
+          } else if(snapshot.hasError) {
+            return Center(
+              child: Text("${snapshot.error}"),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+            );
+          }
+        },
       ),
     );
   }
@@ -74,11 +108,5 @@ class _ProductListPageState extends State<ProductListPage> {
       builder: (context) => const CartPage(),
     );
     Navigator.push(context, route);
-  }
-
-  _addProduct() {
-    cartStore.addProductToCart(
-      ProductModel("", 0.0)
-    );
   }
 }

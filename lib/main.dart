@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shopping_cart/stores/cart_store.dart';
 import 'package:shopping_cart/values/theme.dart';
 import 'package:shopping_cart/view/product_list_page.dart';
 
 void main() {
   runApp(const MyApp());
 }
-
-final cartStore = CartStore();
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

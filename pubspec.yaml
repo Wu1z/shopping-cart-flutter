@@ -37,6 +37,7 @@ dependencies:
   google_fonts: ^2.3.2
   mobx: ^2.0.7+2
   flutter_mobx: ^2.0.6+1
+  http: ^0.13.4
 
 dev_dependencies:
   flutter_test:
