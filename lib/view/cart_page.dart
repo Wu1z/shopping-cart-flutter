@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:shopping_cart/view/product_list_page.dart';
 import 'package:shopping_cart/widget/product_card.dart';
 
 class CartPage extends StatefulWidget {
@@ -9,35 +11,41 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.secondary,
+          color: Theme.of(context).colorScheme.primary,
         ),
         elevation: 0,
         title: Text(
           "Cart",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
       ),
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: ProductCard(
-                    readOnly: true,
-                  ),
+            child: Observer(
+              builder: (_) {
+                return ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: cartStore.productList.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ProductCard(
+                        product: cartStore.productList[index],
+                        readOnly: true,
+                      ),
+                    );
+                  },
                 );
               },
             ),
@@ -50,10 +58,10 @@ class _CartPageState extends State<CartPage> {
               child: MaterialButton(
                 elevation: 0,
                 padding: const EdgeInsets.all(10),
-                color: Theme.of(context).colorScheme.secondary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)
                 ),
+                color: Theme.of(context).colorScheme.primary,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
@@ -61,13 +69,13 @@ class _CartPageState extends State<CartPage> {
                       "CLEAR CART",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.white
+                        color: Colors.black
                       ),
                     ),
                     SizedBox(width: 10,),
                     Icon(
                       Icons.delete,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ],
                 ),
@@ -81,6 +89,7 @@ class _CartPageState extends State<CartPage> {
   }
 
   _clearCartAndReturn() {
+    cartStore.clearCart();
     Navigator.pop(context);
   }
 }

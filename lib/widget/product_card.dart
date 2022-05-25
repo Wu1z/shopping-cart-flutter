@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_cart/models/product_model.dart';
 
 class ProductCard extends StatelessWidget {
 
   final bool readOnly;
+  final VoidCallback? onPressed;
+  final ProductModel product;
 
   const ProductCard({
     Key? key,
     this.readOnly = false,
+    this.onPressed, 
+    required this.product,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 16,
+      elevation: 0,
+      color: Theme.of(context).colorScheme.background,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -24,8 +30,9 @@ class ProductCard extends StatelessWidget {
             Container(
               height: 100,
               width: 100,
+              child: Image.network(product.image ?? ""),
               decoration: BoxDecoration(
-                color: Colors.lightBlue[200],
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(10)
               ),
             ),
@@ -33,10 +40,10 @@ class ProductCard extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(10),
                 child: Text(
-                  "Nome produto",
+                  product.title ?? "",
                   style: TextStyle(
                     fontSize: 16,
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.bold
                   ),
                 ),
@@ -44,36 +51,17 @@ class ProductCard extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.all(5),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Visibility(
-                      visible: !readOnly,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.remove, 
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        onPressed: () => debugPrint, 
-                      ),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Visibility(
+                  visible: !readOnly,
+                  child: IconButton(
+                    icon: Icon(Icons.add,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
+                    onPressed: onPressed, 
                   ),
-                  const Text("1"),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Visibility(
-                      visible: !readOnly,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.add,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        onPressed: () => debugPrint, 
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ],
