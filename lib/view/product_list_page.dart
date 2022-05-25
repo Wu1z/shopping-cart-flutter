@@ -8,7 +8,6 @@ import 'package:shopping_cart/view/cart_page.dart';
 import 'package:shopping_cart/widget/product_card.dart';
 
 final cartStore = CartStore();
-
 class ProductListPage extends StatefulWidget {
   const ProductListPage({Key? key}) : super(key: key);
 
@@ -17,7 +16,6 @@ class ProductListPage extends StatefulWidget {
 }
 
 class _ProductListPageState extends State<ProductListPage> {
-
 
   late Future<List<ProductModel>> _request;
   final _repository = StoreRepository(Client());

@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: darkColorScheme,
         textTheme: GoogleFonts.montserratTextTheme(
-          Theme.of(context).textTheme, // If this is not set, then ThemeData.light().textTheme is used.
+          Theme.of(context).textTheme,
         ),
       ),
       home: const ProductListPage(),

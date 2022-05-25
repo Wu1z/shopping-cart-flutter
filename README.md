@@ -2,6 +2,17 @@
 
 A shopping cart made in Flutter using MobX.
 
+The products from the list is obtained from a free api:
+**https://fakestoreapi.com/**
+
+## How to run
+
+To run the project is necessary generate the .g files for MobX, to generate run the code above:
+
+```
+flutter packages pub run build_runner build
+```
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
